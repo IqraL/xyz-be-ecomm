@@ -6,7 +6,7 @@ dotenv.config();
 
 import { getCookie } from "./sessions";
 import { getCategories, getTagMap } from "./categories";
-import { productById, productsByCategory, productsByTags } from "./products";
+import { productById, productByRouter, productsByCategory, productsByTags } from "./products";
 import { Product } from "./types";
 import { MongoDbClient } from "./mongodbclient";
 
@@ -27,19 +27,14 @@ app.get("/ping", async (req, res) => {
   res.send("pong");
 });
 
+
+app.use(productByRouter);
+
 app.get("/get-cookie", (req, res) => getCookie(req, res));
 app.get("/categories", (req, res) => getCategories(req, res));
 app.get("/tags-map", (req, res) => getTagMap(req, res));
 
-app.get("/products-by-category", (req, res) => productsByCategory(req, res));
-app.get(
-  "/products-by-tags",
-  (req: Request<{}, {}, {}, { tags: string }>, res) => productsByTags(req, res)
-);
-app.get(
-  "/product-by-id",
-  async (req: Request<{}, {}, {}, { id: string }>, res) => productById(req, res)
-);
+
 
 
 app.listen(8000, () => {
