@@ -6,7 +6,8 @@ dotenv.config();
 
 import { getCookie } from "./sessions";
 import { getCategories, getTagMap } from "./categories";
-import { productsByCategory, productsByTags } from "./products";
+import { productById, productsByCategory, productsByTags } from "./products";
+import { Product } from "./types";
 import { MongoDbClient } from "./mongodbclient";
 
 const app = express();
@@ -35,7 +36,10 @@ app.get(
   "/products-by-tags",
   (req: Request<{}, {}, {}, { tags: string }>, res) => productsByTags(req, res)
 );
-
+app.get(
+  "/product-by-id",
+  async (req: Request<{}, {}, {}, { id: string }>, res) => productById(req, res)
+);
 
 
 app.listen(8000, () => {
