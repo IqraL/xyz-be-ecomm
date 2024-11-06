@@ -5,16 +5,18 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { getCookie } from "./sessions";
-import { getCategories, getTagMap } from "./categories";
-import { productById, productByRouter, productsByCategory, productsByTags } from "./products";
-import { Product } from "./types";
-import { MongoDbClient } from "./mongodbclient";
+import { categoriesRouter } from "./routes/categories";
+import { productByRouter } from "./routes/products";
 
 const app = express();
 
 app.use(
   cors({
-    origin: process.env.frontend_uri, // Update this to your frontend URL
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:8000",
+      "http://localhost:4000",
+    ], // Update this to your frontend URL
     credentials: true, // Allow cookies to be sent and received
   })
 );
@@ -27,15 +29,10 @@ app.get("/ping", async (req, res) => {
   res.send("pong");
 });
 
-
 app.use(productByRouter);
+app.use(categoriesRouter);
 
 app.get("/get-cookie", (req, res) => getCookie(req, res));
-app.get("/categories", (req, res) => getCategories(req, res));
-app.get("/tags-map", (req, res) => getTagMap(req, res));
-
-
-
 
 app.listen(8000, () => {
   console.log("listening at port 8000");

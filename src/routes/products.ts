@@ -1,7 +1,19 @@
 import express, { Request, Response } from "express";
-import { MongoDbClient } from "./mongodbclient";
-import { Product } from "./types";
+import { MongoDbClient } from "../mongodbclient";
+import { Product } from "../types";
 const productByRouter = express.Router();
+
+
+export const getAllProducts = async (req: Request, res: Response) => {
+    const client = await MongoDbClient.getClient();
+    const cursor = await client
+      .db("ecomm_db")
+      .collection("products")
+      .find<Product>({});
+
+      const products = await cursor.toArray();
+    res.send(products);
+}
 
 export const productsByCategory = async (req: Request, res: Response) => {
   const category = req.query.category;
@@ -57,6 +69,10 @@ export const productById = async (
 };
 
 
+productByRouter.get("/products", (req, res) =>
+  getAllProducts(req, res)
+);
+;
 productByRouter.get("/products-by-category", (req, res) =>
   productsByCategory(req, res)
 );

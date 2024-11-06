@@ -1,6 +1,33 @@
-import { Request, Response } from "express";
+import express, { Request, Response } from "express";
+import { MongoDbClient } from "../mongodbclient";
+const categoriesRouter = express.Router();
 
-import { MongoDbClient } from "./mongodbclient";
+const categories = [
+  "beauty",
+  "fragrances",
+  "furniture",
+  "groceries",
+  "home-decoration",
+  "kitchen-accessories",
+  "laptops",
+  "mens-shirts",
+  "mens-shoes",
+  "mens-watches",
+  "mobile-accessories",
+  "motorcycle",
+  "skin-care",
+  "smartphones",
+  "sports-accessories",
+  "sunglasses",
+  "tablets",
+  "tops",
+  "vehicle",
+  "womens-bags",
+  "womens-dresses",
+  "womens-jewellery",
+  "womens-shoes",
+  "womens-watches",
+];
 
 export const getCategories = async (req: Request, res: Response) => {
   const client = await MongoDbClient.getClient();
@@ -45,29 +72,8 @@ export const getTagMap = async (req: Request, res: Response) => {
   res.send(removeDuplicates);
 };
 
-const categories = [
-  "beauty",
-  "fragrances",
-  "furniture",
-  "groceries",
-  "home-decoration",
-  "kitchen-accessories",
-  "laptops",
-  "mens-shirts",
-  "mens-shoes",
-  "mens-watches",
-  "mobile-accessories",
-  "motorcycle",
-  "skin-care",
-  "smartphones",
-  "sports-accessories",
-  "sunglasses",
-  "tablets",
-  "tops",
-  "vehicle",
-  "womens-bags",
-  "womens-dresses",
-  "womens-jewellery",
-  "womens-shoes",
-  "womens-watches",
-];
+
+categoriesRouter.get("/categories", (req, res) => getCategories(req, res));
+categoriesRouter.get("/tags-map", (req, res) => getTagMap(req, res));
+
+export { categoriesRouter };
