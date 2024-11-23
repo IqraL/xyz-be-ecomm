@@ -7,6 +7,7 @@ dotenv.config();
 import { getCookie } from "./sessions";
 import { categoriesRouter } from "./routes/categories";
 import { productByRouter } from "./routes/products";
+import { cartRouter } from "./routes/cart";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.get("/ping", async (req, res) => {
 
 app.use(productByRouter);
 app.use(categoriesRouter);
+app.use(cartRouter)
 
 app.get("/get-cookie", (req, res) => getCookie(req, res));
 

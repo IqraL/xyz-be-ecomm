@@ -38,3 +38,12 @@ export type Product = {
   };
   images: string[];
 };
+
+export type Cart = {
+  items: CartItem[];
+  userId: string;
+};
+export type CartItem = {
+  productId: number;
+  quantity: number;
+};
